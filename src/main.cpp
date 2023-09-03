@@ -27,7 +27,8 @@ int main() {
         return -1;
     }
 
-    glClearColor(0.50f, 0.50f, 0.25f, 1.0f);
+    glClearColor(0.50f, 0.50f, 0.50f, 1.0f);
+    std::cout << glGetString(GL_VERSION) << std::endl;
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
