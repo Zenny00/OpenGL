@@ -119,6 +119,8 @@ int main() {
     /* Make the window's context current */
     glfwMakeContextCurrent(window);
 
+    glfwSwapInterval(1);
+
     // Load OpenGL
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
         std::cout << "Could not load OpenGL" << std::endl;
@@ -171,14 +173,28 @@ int main() {
     unsigned int shader = CreateShader(source.VertexSource, source.FragmentSource);
     GLCall(glUseProgram(shader));
 
+    // Find our uniform in the shader | This will return an index of -1 if the uniform doesn't exist or is not used in the shader
+    GLCall(int colorUniformIndex = glGetUniformLocation(shader, "u_Color"));
+    ASSERT(colorUniformIndex != -1);
+    GLCall(glUniform4f(colorUniformIndex, 0.8f, 0.3f, 0.8f, 1.0f)); // Sending 4 floats to the shader via uniform
+
+    float red_channel = 0.0f;
+    float green_channel = 0.2f;
+    float blue_channel = 0.2f;
+    float increment = 0.005f;
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
         /* Render here */
         GLCall(glClear(GL_COLOR_BUFFER_BIT));
 
+        GLCall(glUniform4f(colorUniformIndex, red_channel, green_channel, blue_channel, 1.0f));
         // Clear all existing errors/check for thrown errors
         GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr)); // We can specify nullptr here for the index buffer as it has already been bound
+
+        red_channel += increment;
+        if (red_channel > 1.0f) increment = -increment;
+        else if (red_channel < 0.0f) increment = -increment;
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
