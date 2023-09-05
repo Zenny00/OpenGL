@@ -178,7 +178,7 @@ int main() {
         GLCall(glClear(GL_COLOR_BUFFER_BIT));
 
         // Clear all existing errors/check for thrown errors
-        GLCall(glDrawElements(GL_TRIANGLES, 6, GL_INT, nullptr)); // We can specify nullptr here for the index buffer as it has already been bound
+        GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr)); // We can specify nullptr here for the index buffer as it has already been bound
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
