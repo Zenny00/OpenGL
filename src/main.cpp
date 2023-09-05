@@ -112,8 +112,8 @@ int main() {
     const int NUM_POSITIONS = 6;
     float positions[NUM_POSITIONS] = {
         -0.5f, -0.5f, 
-        0.0f, 0.5f, 
-        0.5f, -0.5f
+        0.5f, -0.5f, 
+        0.5f, 0.5f
     };
 
     const int NUM_BUFFERS = 1;
