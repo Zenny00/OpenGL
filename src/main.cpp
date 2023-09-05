@@ -110,19 +110,24 @@ int main() {
     std::cout << glGetString(GL_VERSION) << std::endl;
 
     const int NUM_POSITIONS = 6;
-    float positions[NUM_POSITIONS] = {
+    float positions[] = {
         -0.5f, -0.5f, 
         0.5f, -0.5f, 
-        0.5f, 0.5f
+        0.5f, 0.5f,
+
+        0.5f, 0.5f,
+        -0.5f, 0.5f,
+        -0.5f, -0.5f
     };
 
     const int NUM_BUFFERS = 1;
+    const int NUM_TRIANGLES = 2;
     unsigned int buffer;
 
     // Define a vertex buffer
     glGenBuffers(NUM_BUFFERS, &buffer);
     glBindBuffer(GL_ARRAY_BUFFER, buffer);
-    glBufferData(GL_ARRAY_BUFFER, NUM_POSITIONS * sizeof(float), positions, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, NUM_POSITIONS * NUM_TRIANGLES * sizeof(float), positions, GL_STATIC_DRAW);
     
     const int INDEX = 0;
     const int NUM_COMPONENTS = 2;
@@ -141,7 +146,7 @@ int main() {
         /* Render here */
         glClear(GL_COLOR_BUFFER_BIT);
 
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
