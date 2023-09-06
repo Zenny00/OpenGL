@@ -108,6 +108,10 @@ int main() {
     if (!glfwInit())
         return -1;
 
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
     /* Create a windowed mode window and its OpenGL context */
     window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
     if (!window)
@@ -131,7 +135,7 @@ int main() {
     GLCall(glClearColor(0.50f, 0.50f, 0.50f, 1.0f));
     std::cout << glGetString(GL_VERSION) << std::endl;
 
-    const int NUM_POSITIONS = 6;
+    const int NUM_POSITIONS = 4;
     float positions[] = {
         -0.5f, -0.5f, // 0
          0.5f, -0.5f, // 1
@@ -148,6 +152,12 @@ int main() {
     const int NUM_TRIANGLES = 2;
     unsigned int buffer;
 
+    // Vertex array
+    // Vertex buffer is linked to vertex array object
+    unsigned int vao;
+    GLCall(glGenVertexArrays(1, &vao));
+    GLCall(glBindVertexArray(vao));
+
     // Define a vertex buffer
     GLCall(glGenBuffers(NUM_BUFFERS, &buffer));
     GLCall(glBindBuffer(GL_ARRAY_BUFFER, buffer));
@@ -156,7 +166,7 @@ int main() {
     const int INDEX = 0;
     const int NUM_COMPONENTS = 2;
     const int STRIDE = sizeof(float) * NUM_COMPONENTS;
-    
+
     GLCall(glEnableVertexAttribArray(0));
     GLCall(glVertexAttribPointer(INDEX, NUM_COMPONENTS, GL_FLOAT, GL_FALSE, STRIDE, 0));
 
@@ -178,23 +188,35 @@ int main() {
     ASSERT(colorUniformIndex != -1);
     GLCall(glUniform4f(colorUniformIndex, 0.8f, 0.3f, 0.8f, 1.0f)); // Sending 4 floats to the shader via uniform
 
-    float red_channel = 0.0f;
+    float red_channel = 0.1f;
     float green_channel = 0.2f;
-    float blue_channel = 0.2f;
+    float blue_channel = 0.3f;
     float increment = 0.005f;
+
+    GLCall(glBindVertexArray(0));
+    GLCall(glUseProgram(0));
+    GLCall(glBindBuffer(GL_ARRAY_BUFFER, 0));
+    GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
+
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
         /* Render here */
         GLCall(glClear(GL_COLOR_BUFFER_BIT));
 
+        GLCall(glUseProgram(shader));
         GLCall(glUniform4f(colorUniformIndex, red_channel, green_channel, blue_channel, 1.0f));
+
+        // Bind the vertex array object
+        // This will also bind the BUFFER and ELEMENT_BUFFER
+        GLCall(glBindVertexArray(vao));
+      
         // Clear all existing errors/check for thrown errors
         GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr)); // We can specify nullptr here for the index buffer as it has already been bound
 
         red_channel += increment;
-        if (red_channel > 1.0f) increment = -increment;
-        else if (red_channel < 0.0f) increment = -increment;
+        if (red_channel > 1.0f || green_channel > 1.0f || blue_channel > 1.0f) increment = -increment;
+        else if (red_channel < 0.0f || green_channel < 0.0f || blue_channel < 0.0f) increment = -increment;
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
