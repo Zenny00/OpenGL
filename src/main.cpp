@@ -1,10 +1,9 @@
-#include <iostream>
-#include "glad.h"
-#include <GLFW/glfw3.h>
 #include <fstream>
 #include <string>
 #include <sstream>
-#include "ErrorChecking.h"
+#include "ErrorChecker.h"
+#include "VertexBuffer.h"
+#include "IndexBuffer.h"
 
 struct ShaderProgramSource {
     std::string VertexSource;
@@ -115,7 +114,7 @@ int main() {
     GLCall(glClearColor(0.50f, 0.50f, 0.50f, 1.0f));
     std::cout << glGetString(GL_VERSION) << std::endl;
 
-    const int NUM_POSITIONS = 4;
+    const int NUM_VERTICES = 4;
     float positions[] = {
         -0.5f, -0.5f, // 0
          0.5f, -0.5f, // 1
@@ -139,9 +138,8 @@ int main() {
     GLCall(glBindVertexArray(vao));
 
     // Define a vertex buffer
-    GLCall(glGenBuffers(NUM_BUFFERS, &buffer));
-    GLCall(glBindBuffer(GL_ARRAY_BUFFER, buffer));
-    GLCall(glBufferData(GL_ARRAY_BUFFER, NUM_POSITIONS * NUM_TRIANGLES * sizeof(float), positions, GL_STATIC_DRAW));
+    // Automatically bound by Vertex array object
+    VertexBuffer vb(positions, NUM_VERTICES * NUM_TRIANGLES * sizeof(float));
     
     const int INDEX = 0;
     const int NUM_COMPONENTS = 2;
@@ -152,12 +150,10 @@ int main() {
 
     unsigned int ibo; // Index buffer object
     const int NUM_INDEX_BUFFERS = 1;
-    const int SIZE_OF_INDICES = 6 * sizeof(unsigned int);
+    const int INDICES_COUNT  = 6;
 
     // Generate an index buffer
-    GLCall(glGenBuffers(NUM_INDEX_BUFFERS, &ibo));
-    GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo));
-    GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, SIZE_OF_INDICES, indices, GL_STATIC_DRAW));
+    IndexBuffer ib(indices, INDICES_COUNT);
 
     ShaderProgramSource source = ParseShader("../res/shaders/BasicShader.shader");
     unsigned int shader = CreateShader(source.VertexSource, source.FragmentSource);
@@ -176,8 +172,8 @@ int main() {
     // Unbind vertex array, shader, buffer, and index buffer
     GLCall(glBindVertexArray(0));
     GLCall(glUseProgram(0));
-    GLCall(glBindBuffer(GL_ARRAY_BUFFER, 0));
-    GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
+    vb.Unbind();
+    ib.Bind();
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
