@@ -4,27 +4,7 @@
 #include <fstream>
 #include <string>
 #include <sstream>
-#include <signal.h>
-
-// Spooky MACROS
-# define ASSERT(x) if (!(x)) raise(SIGTRAP);
-# define GLCall(x) GLClearError();\
-    x;\
-    ASSERT(GLLogCall(#x, __FILE__, __LINE__)); // Pass x (use # to convert to string), file, and line to log call
-
-static bool GLLogCall(const char *function, const char *file, int line) {
-    // Loop while there are errors remaining
-    while (GLenum error = glGetError()) {
-        std::cout << "[OpenGL Error] " << "(" << error << "): " << function << " " << file << ":" << line << std::endl;
-        return false;
-    }
-    return true;
-}
-
-static void GLClearError() {
-    // Keep looping until no errors remain
-    while (glGetError() != GL_NO_ERROR);
-}
+#include "ErrorChecking.h"
 
 struct ShaderProgramSource {
     std::string VertexSource;
@@ -190,9 +170,10 @@ int main() {
 
     float red_channel = 0.1f;
     float green_channel = 0.2f;
-    float blue_channel = 0.3f;
-    float increment = 0.005f;
+    float blue_channel = 0.8f;
+    float increment = 0.05f;
 
+    // Unbind vertex array, shader, buffer, and index buffer
     GLCall(glBindVertexArray(0));
     GLCall(glUseProgram(0));
     GLCall(glBindBuffer(GL_ARRAY_BUFFER, 0));
@@ -215,8 +196,8 @@ int main() {
         GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr)); // We can specify nullptr here for the index buffer as it has already been bound
 
         red_channel += increment;
-        if (red_channel > 1.0f || green_channel > 1.0f || blue_channel > 1.0f) increment = -increment;
-        else if (red_channel < 0.0f || green_channel < 0.0f || blue_channel < 0.0f) increment = -increment;
+        if (red_channel > 1.0f) increment = -increment;
+        else if (red_channel < 0.0f) increment = -increment;
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
