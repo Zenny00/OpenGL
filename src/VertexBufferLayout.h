@@ -3,6 +3,7 @@
 #include <vector>
 #include "glad.h"
 #include "ErrorChecker.h"
+#include <stdexcept>
 
 struct VertexBufferElement {
     unsigned int count;
@@ -35,7 +36,9 @@ class VertexBufferLayout {
         VertexBufferLayout() : m_Stride(0) {}
 
         template<typename T>
-        void Push(unsigned int count) {}
+        void Push(unsigned int count) {
+            std::runtime_error(false);
+        }
 
         inline const std::vector<VertexBufferElement> & GetElements() const { return m_Elements; }
         inline unsigned int GetStride() const { return m_Stride; }

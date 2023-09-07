@@ -9,6 +9,7 @@ add_executable(opengl_simulation
     ErrorChecker.cpp
     VertexArray.cpp
     VertexBuffer.cpp
+    Shader.cpp
 )
 
 target_link_libraries(opengl_simulation glfw)
