@@ -8,3 +8,6 @@ Below is some of the output of the simple shaders written:
 
 ## Blue Rectangle:
 ![image](https://github.com/Zenny00/OpenGL/assets/99524099/cf7b13bf-185d-489c-b4d0-ad93679d56af)
+
+## Color Changing Rectangle: 
+[Screencast from 09-06-2023 08:24:09 PM.webm](https://github.com/Zenny00/OpenGL/assets/99524099/2b75d04e-ddb1-4118-bd06-ad678a71078d)
