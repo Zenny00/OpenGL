@@ -1,3 +1,5 @@
+#pragma once
+
 class IndexBuffer {
     private:
         unsigned int m_RendererID;

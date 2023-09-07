@@ -10,6 +10,7 @@ add_executable(opengl_simulation
     VertexArray.cpp
     VertexBuffer.cpp
     Shader.cpp
+    Renderer.cpp   
 )
 
 target_link_libraries(opengl_simulation glfw)

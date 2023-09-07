@@ -7,6 +7,7 @@
 #include "IndexBuffer.h"
 #include "VertexArray.h"
 #include "Shader.h"
+#include "Renderer.h"
 
 // Notes:
 // Vertex shaders find the position of each vertex in the window
@@ -43,7 +44,6 @@ int main() {
         return -1;
     }
 
-    GLCall(glClearColor(0.50f, 0.50f, 0.50f, 1.0f));
     std::cout << glGetString(GL_VERSION) << std::endl;
     {
         const int NUM_VERTICES = 4;
@@ -95,22 +95,18 @@ int main() {
         vb.Unbind();
         ib.Unbind();
 
+        Renderer renderer;
+
         /* Loop until the user closes the window */
         while (!glfwWindowShouldClose(window))
         {
             /* Render here */
-            GLCall(glClear(GL_COLOR_BUFFER_BIT));
+            renderer.Clear();
 
             shader.Bind();
-            shader.SetUniform4f("u_Color", red_channel, green_channel, blue_channel, 1.0f);
+            shader.SetUniform4f("u_Color", red_channel, 0.3f, 0.8f, 1.0f);
 
-            // Bind the vertex array object
-            // This will also bind the BUFFER and ELEMENT_BUFFER
-            va.Bind();
-            ib.Bind();
-        
-            // Clear all existing errors/check for thrown errors
-            GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr)); // We can specify nullptr here for the index buffer as it has already been bound
+            renderer.Draw(va, ib, shader);
 
             red_channel += increment;
             if (red_channel > 1.0f) increment = -increment;
