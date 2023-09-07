@@ -113,97 +113,97 @@ int main() {
 
     GLCall(glClearColor(0.50f, 0.50f, 0.50f, 1.0f));
     std::cout << glGetString(GL_VERSION) << std::endl;
-
-    const int NUM_VERTICES = 4;
-    float positions[] = {
-        -0.5f, -0.5f, // 0
-         0.5f, -0.5f, // 1
-         0.5f,  0.5f, // 2
-        -0.5f,  0.5f, // 3
-    };
-
-    unsigned int indices[] = {
-        0, 1, 2,
-        2, 3, 0
-    };
-
-    const int NUM_BUFFERS = 1;
-    const int NUM_TRIANGLES = 2;
-    unsigned int buffer;
-
-    // Vertex array
-    // Vertex buffer is linked to vertex array object
-    unsigned int vao;
-    GLCall(glGenVertexArrays(1, &vao));
-    GLCall(glBindVertexArray(vao));
-
-    // Define a vertex buffer
-    // Automatically bound by Vertex array object
-    VertexBuffer vb(positions, NUM_VERTICES * NUM_TRIANGLES * sizeof(float));
-    
-    const int INDEX = 0;
-    const int NUM_COMPONENTS = 2;
-    const int STRIDE = sizeof(float) * NUM_COMPONENTS;
-
-    GLCall(glEnableVertexAttribArray(0));
-    GLCall(glVertexAttribPointer(INDEX, NUM_COMPONENTS, GL_FLOAT, GL_FALSE, STRIDE, 0));
-
-    unsigned int ibo; // Index buffer object
-    const int NUM_INDEX_BUFFERS = 1;
-    const int INDICES_COUNT  = 6;
-
-    // Generate an index buffer
-    IndexBuffer ib(indices, INDICES_COUNT);
-
-    ShaderProgramSource source = ParseShader("../res/shaders/BasicShader.shader");
-    unsigned int shader = CreateShader(source.VertexSource, source.FragmentSource);
-    GLCall(glUseProgram(shader));
-
-    // Find our uniform in the shader | This will return an index of -1 if the uniform doesn't exist or is not used in the shader
-    GLCall(int colorUniformIndex = glGetUniformLocation(shader, "u_Color"));
-    ASSERT(colorUniformIndex != -1);
-    GLCall(glUniform4f(colorUniformIndex, 0.8f, 0.3f, 0.8f, 1.0f)); // Sending 4 floats to the shader via uniform
-
-    float red_channel = 0.1f;
-    float green_channel = 0.2f;
-    float blue_channel = 0.8f;
-    float increment = 0.05f;
-
-    // Unbind vertex array, shader, buffer, and index buffer
-    GLCall(glBindVertexArray(0));
-    GLCall(glUseProgram(0));
-    vb.Unbind();
-    ib.Bind();
-
-    /* Loop until the user closes the window */
-    while (!glfwWindowShouldClose(window))
     {
-        /* Render here */
-        GLCall(glClear(GL_COLOR_BUFFER_BIT));
+        const int NUM_VERTICES = 4;
+        float positions[] = {
+            -0.5f, -0.5f, // 0
+            0.5f, -0.5f, // 1
+            0.5f,  0.5f, // 2
+            -0.5f,  0.5f, // 3
+        };
 
-        GLCall(glUseProgram(shader));
-        GLCall(glUniform4f(colorUniformIndex, red_channel, green_channel, blue_channel, 1.0f));
+        unsigned int indices[] = {
+            0, 1, 2,
+            2, 3, 0
+        };
 
-        // Bind the vertex array object
-        // This will also bind the BUFFER and ELEMENT_BUFFER
+        const int NUM_BUFFERS = 1;
+        const int NUM_TRIANGLES = 2;
+        unsigned int buffer;
+
+        // Vertex array
+        // Vertex buffer is linked to vertex array object
+        unsigned int vao;
+        GLCall(glGenVertexArrays(1, &vao));
         GLCall(glBindVertexArray(vao));
-      
-        // Clear all existing errors/check for thrown errors
-        GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr)); // We can specify nullptr here for the index buffer as it has already been bound
 
-        red_channel += increment;
-        if (red_channel > 1.0f) increment = -increment;
-        else if (red_channel < 0.0f) increment = -increment;
+        // Define a vertex buffer
+        // Automatically bound by Vertex array object
+        VertexBuffer vb(positions, NUM_VERTICES * NUM_TRIANGLES * sizeof(float));
+        
+        const int INDEX = 0;
+        const int NUM_COMPONENTS = 2;
+        const int STRIDE = sizeof(float) * NUM_COMPONENTS;
 
-        /* Swap front and back buffers */
-        glfwSwapBuffers(window);
+        GLCall(glEnableVertexAttribArray(0));
+        GLCall(glVertexAttribPointer(INDEX, NUM_COMPONENTS, GL_FLOAT, GL_FALSE, STRIDE, 0));
 
-        /* Poll for and process events */
-        glfwPollEvents();
+        unsigned int ibo; // Index buffer object
+        const int NUM_INDEX_BUFFERS = 1;
+        const int INDICES_COUNT  = 6;
+
+        // Generate an index buffer
+        IndexBuffer ib(indices, INDICES_COUNT);
+
+        ShaderProgramSource source = ParseShader("../res/shaders/BasicShader.shader");
+        unsigned int shader = CreateShader(source.VertexSource, source.FragmentSource);
+        GLCall(glUseProgram(shader));
+
+        // Find our uniform in the shader | This will return an index of -1 if the uniform doesn't exist or is not used in the shader
+        GLCall(int colorUniformIndex = glGetUniformLocation(shader, "u_Color"));
+        ASSERT(colorUniformIndex != -1);
+        GLCall(glUniform4f(colorUniformIndex, 0.8f, 0.3f, 0.8f, 1.0f)); // Sending 4 floats to the shader via uniform
+
+        float red_channel = 0.1f;
+        float green_channel = 0.2f;
+        float blue_channel = 0.8f;
+        float increment = 0.05f;
+
+        // Unbind vertex array, shader, buffer, and index buffer
+        GLCall(glBindVertexArray(0));
+        GLCall(glUseProgram(0));
+        vb.Unbind();
+        ib.Bind();
+
+        /* Loop until the user closes the window */
+        while (!glfwWindowShouldClose(window))
+        {
+            /* Render here */
+            GLCall(glClear(GL_COLOR_BUFFER_BIT));
+
+            GLCall(glUseProgram(shader));
+            GLCall(glUniform4f(colorUniformIndex, red_channel, green_channel, blue_channel, 1.0f));
+
+            // Bind the vertex array object
+            // This will also bind the BUFFER and ELEMENT_BUFFER
+            GLCall(glBindVertexArray(vao));
+        
+            // Clear all existing errors/check for thrown errors
+            GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr)); // We can specify nullptr here for the index buffer as it has already been bound
+
+            red_channel += increment;
+            if (red_channel > 1.0f) increment = -increment;
+            else if (red_channel < 0.0f) increment = -increment;
+
+            /* Swap front and back buffers */
+            glfwSwapBuffers(window);
+
+            /* Poll for and process events */
+            glfwPollEvents();
+        }
+
+        GLCall(glDeleteProgram(shader));
     }
-
-    GLCall(glDeleteProgram(shader));
-
     glfwTerminate();
     return 0;
 }
