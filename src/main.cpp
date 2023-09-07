@@ -1,9 +1,11 @@
 #include <fstream>
 #include <string>
 #include <sstream>
+
 #include "ErrorChecker.h"
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
+#include "VertexArray.h"
 
 struct ShaderProgramSource {
     std::string VertexSource;
@@ -129,28 +131,20 @@ int main() {
 
         const int NUM_BUFFERS = 1;
         const int NUM_TRIANGLES = 2;
-        unsigned int buffer;
+        const int NUM_INDEX_BUFFERS = 1;
+        const int INDICES_COUNT  = 6;
 
         // Vertex array
         // Vertex buffer is linked to vertex array object
-        unsigned int vao;
-        GLCall(glGenVertexArrays(1, &vao));
-        GLCall(glBindVertexArray(vao));
+        VertexArray va;
 
         // Define a vertex buffer
         // Automatically bound by Vertex array object
         VertexBuffer vb(positions, NUM_VERTICES * NUM_TRIANGLES * sizeof(float));
         
-        const int INDEX = 0;
-        const int NUM_COMPONENTS = 2;
-        const int STRIDE = sizeof(float) * NUM_COMPONENTS;
-
-        GLCall(glEnableVertexAttribArray(0));
-        GLCall(glVertexAttribPointer(INDEX, NUM_COMPONENTS, GL_FLOAT, GL_FALSE, STRIDE, 0));
-
-        unsigned int ibo; // Index buffer object
-        const int NUM_INDEX_BUFFERS = 1;
-        const int INDICES_COUNT  = 6;
+        VertexBufferLayout layout;
+        layout.Push<float>(2);
+        va.AddBuffer(vb, layout);
 
         // Generate an index buffer
         IndexBuffer ib(indices, INDICES_COUNT);
@@ -186,7 +180,7 @@ int main() {
 
             // Bind the vertex array object
             // This will also bind the BUFFER and ELEMENT_BUFFER
-            GLCall(glBindVertexArray(vao));
+            va.Bind();
         
             // Clear all existing errors/check for thrown errors
             GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr)); // We can specify nullptr here for the index buffer as it has already been bound

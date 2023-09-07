@@ -7,6 +7,8 @@ add_executable(opengl_simulation
     IndexBuffer.cpp
     VertexBuffer.cpp
     ErrorChecker.cpp
+    VertexArray.cpp
+    VertexBuffer.cpp
 )
 
 target_link_libraries(opengl_simulation glfw)
