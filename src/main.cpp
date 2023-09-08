@@ -65,9 +65,9 @@ int main() {
 
         /* Loop until the user closes the window */
         float x = 0.7f;
-        float y = 0.8f;
+        float y = 0.7f;
         float x_increment = 0.005f;
-        float y_increment = 0.0025f;
+        float y_increment = 0.005f;
 
         Texture texture("../res/textures/rock_wall.png");
         texture.Bind();
@@ -120,13 +120,13 @@ int main() {
             // Update values
             red_channel += increment;
             if (red_channel > 1.0f || red_channel < 0.0f) increment = -increment;
+            */
 
             x += x_increment;
             if (x > 1.0f || x < 0.0f) x_increment = -x_increment;
 
             y += y_increment;
             if (y > 1.0f || y < 0.0f) y_increment = -y_increment;
-            */
 
             /* Swap front and back buffers */
             glfwSwapBuffers(window);
