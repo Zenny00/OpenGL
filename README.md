@@ -17,3 +17,6 @@ Below is some of the output of the simple shaders written:
 
 ## Animated Texture Rectangle:
 [Screencast from 09-07-2023 10:15:25 PM.webm](https://github.com/Zenny00/OpenGL/assets/99524099/a9445376-3e69-466d-9806-0664aab64dd3)
+
+## Simple Circle Equation Earth Orbit:
+[Screencast from 09-08-2023 08:47:30 AM.webm](https://github.com/Zenny00/OpenGL/assets/99524099/dcb11a60-689f-40c7-8adc-c3936bb236c8)
