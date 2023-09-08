@@ -89,11 +89,14 @@ void Shader::Unbind() const {
 }
 
 void Shader::SetUniform4f(const std::string &name, float v0, float v1, float v2, float v3) {
-    
     GLCall(glUniform4f(GetUniformLocation(name), v0, v1, v2, v3)); // Sending 4 floats to the shader via uniform
 }
 
-unsigned int Shader::GetUniformLocation(const std::string &name) {
+void Shader::SetUniform1i(const std::string &name, int v0) {
+    GLCall(glUniform1i(GetUniformLocation(name), v0)); 
+}
+
+int Shader::GetUniformLocation(const std::string &name) {
     if (m_UniformLocationCache.find(name) != m_UniformLocationCache.end()) {
         return m_UniformLocationCache[name];
     }
