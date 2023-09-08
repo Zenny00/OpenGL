@@ -65,6 +65,7 @@ int main() {
         float y_increment = 0.005f;
         float r = 0.8f;
         float angle = 0.0f;
+        float size = 0.05f;
 
         unsigned int indices[] = {
             0, 1, 2,
@@ -84,10 +85,10 @@ int main() {
         while (!glfwWindowShouldClose(window))
         {
             float positions[] = {
-                x+0.1f,  y-0.1f, 0.0f, 0.0f, // 0
-                x-0.1f, y-0.1f, 1.0f, 0.0f, // 1
-                x-0.1f, y+0.1f,    1.0f, 1.0f, // 2
-                x+0.1f,  y+0.1f,    0.0f, 1.0f // 3
+                x+size,  y-size, 0.0f, 0.0f, // 0
+                x-size, y-size, 1.0f, 0.0f, // 1
+                x-size, y+size,    1.0f, 1.0f, // 2
+                x+size,  y+size,    0.0f, 1.0f // 3
             };
 
             // Vertex array
