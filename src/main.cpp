@@ -32,7 +32,7 @@ int main() {
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     /* Create a windowed mode window and its OpenGL context */
-    window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
+    window = glfwCreateWindow(640, 640, "Simulation Window", NULL, NULL);
     if (!window)
     {
         glfwTerminate();
@@ -81,7 +81,7 @@ int main() {
             2, 3, 0
         };
 
-        Texture texture("../res/textures/rock_wall.png");
+        Texture texture("../res/textures/EarthTexture.png");
         texture.Bind();
         while (!glfwWindowShouldClose(window))
         {
@@ -122,12 +122,12 @@ int main() {
             if (red_channel > 1.0f || red_channel < 0.0f) increment = -increment;
             */
 
+            /*
             for (int i = 0; i < 16; i+=4) {
                 positions[i] += x_increment;
                 if (positions[i] >= 1.0f || positions[i] <= -1.0f) x_increment = -x_increment;
             }
 
-            /*
             y += y_increment;
             if (y > 1.0f || y < 0.0f) y_increment = -y_increment;
             */
