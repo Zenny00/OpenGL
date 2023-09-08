@@ -9,18 +9,13 @@
 #include "Shader.h"
 #include "Renderer.h"
 #include "Texture.h"
+#include <cmath>
 
 // Notes:
 // Vertex shaders find the position of each vertex in the window
 // Fragment/pixel shader finds the color value for each pixel
 
 int main() {
-    const int NUM_BUFFERS = 1;
-    const int NUM_FLOATS = 4;
-    const int NUM_INDEX_BUFFERS = 1;
-    const int INDICES_COUNT  = 6;
-    const int NUM_VERTICES = 4;
-
     GLFWwindow* window;
 
     /* Initialize the library */
@@ -64,27 +59,37 @@ int main() {
         Renderer renderer;
 
         /* Loop until the user closes the window */
-        float x = 0.7f;
-        float y = 0.7f;
+        float x = 0.8f;
+        float y = 0.0f;
         float x_increment = 0.005f;
         float y_increment = 0.005f;
-
-        float positions[] = {
-                -x, -y, 0.0f, 0.0f, // 0
-                 x, -y, 1.0f, 0.0f, // 1
-                 x,  y, 1.0f, 1.0f, // 2
-                -x,  y, 0.0f, 1.0f  // 3
-            };
+        float r = 0.8f;
+        float angle = 0.0f;
 
         unsigned int indices[] = {
             0, 1, 2,
-            2, 3, 0
+            2, 3, 0,
+            4, 5, 6,
+            6, 7, 4
         };
+
+        const int NUM_BUFFERS = 1;
+        const int NUM_FLOATS = 4;
+        const int NUM_INDEX_BUFFERS = 1;
+        const int INDICES_COUNT  = 6;
+        const int NUM_VERTICES = 4;
 
         Texture texture("../res/textures/EarthTexture.png");
         texture.Bind();
         while (!glfwWindowShouldClose(window))
         {
+            float positions[] = {
+                x+0.1f,  y-0.1f, 0.0f, 0.0f, // 0
+                x-0.1f, y-0.1f, 1.0f, 0.0f, // 1
+                x-0.1f, y+0.1f,    1.0f, 1.0f, // 2
+                x+0.1f,  y+0.1f,    0.0f, 1.0f // 3
+            };
+
             // Vertex array
             // Vertex buffer is linked to vertex array object
             VertexArray va;
@@ -116,21 +121,10 @@ int main() {
             vb.Unbind();
             ib.Unbind();
 
-            /*
-            // Update values
-            red_channel += increment;
-            if (red_channel > 1.0f || red_channel < 0.0f) increment = -increment;
-            */
+            x = r * cos(angle);
+            y = r * sin(angle);
 
-            /*
-            for (int i = 0; i < 16; i+=4) {
-                positions[i] += x_increment;
-                if (positions[i] >= 1.0f || positions[i] <= -1.0f) x_increment = -x_increment;
-            }
-
-            y += y_increment;
-            if (y > 1.0f || y < 0.0f) y_increment = -y_increment;
-            */
+            angle += 0.01f;
 
             /* Swap front and back buffers */
             glfwSwapBuffers(window);
