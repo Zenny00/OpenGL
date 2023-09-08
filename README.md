@@ -14,3 +14,6 @@ Below is some of the output of the simple shaders written:
 
 ## Animated Color Changing Rectangle:
 [Screencast from 09-07-2023 07:28:20 PM.webm](https://github.com/Zenny00/OpenGL/assets/99524099/3846a035-d381-4b1a-9233-49d4acb1334c)
+
+## Animated Texture Rectangle:
+[Screencast from 09-07-2023 10:15:25 PM.webm](https://github.com/Zenny00/OpenGL/assets/99524099/a9445376-3e69-466d-9806-0664aab64dd3)
